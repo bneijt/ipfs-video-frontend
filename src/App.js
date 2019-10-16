@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import './App.css'
 import 'milligram';
+import './App.css'
 
 
-class NameForm extends React.Component {
+class PlayerRow extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      value: 'QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie'
+      //QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie
+      //QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +22,7 @@ class NameForm extends React.Component {
   }
 
   handleSubmit(event) {
-    
+
     event.preventDefault();
   }
 
@@ -32,12 +36,17 @@ class NameForm extends React.Component {
              IPFS content hash:
              <input type="text" value={this.state.value} onChange={this.handleChange} />
            </label>
-           <input type="submit" value="Submit" />
+           <input className="button" type="submit" value="Submit" />
          </form>
 
         </div>
         <div className="column column-75">
-          <ReactPlayer url="http://gw.ipfs.video/ipfs/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC" />
+          <ReactPlayer
+            url={"http://gw.ipfs.video/ipfs/" + this.state.value}
+            controls
+            playing
+            muted
+          />
         </div>
       </div>
     );
@@ -54,7 +63,7 @@ function App() {
       <h1>IPFS video player</h1>
       </div>
     </div>
-    <NameForm />
+    <PlayerRow />
   </div>
   );
 }
