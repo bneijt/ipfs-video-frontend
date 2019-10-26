@@ -23,7 +23,8 @@ class CustomCidFormComponent extends React.Component {
   }
 
     handleChange(event) {
-      if(event.target.value.length === "QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie".length) {
+      let cid = event.target.value.trim();
+      if(cid.length === "QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie".length) {
         this.props.history.push("/ipfs/" + event.target.value);
         this.setState({invalid: false});
       } else {
@@ -36,13 +37,9 @@ class CustomCidFormComponent extends React.Component {
     }
     render() {
       return (
-        <form onSubmit={this.handleSubmit}>
-           <label>
-             Custom IPFS hash
-             <input type="text" onChange={this.handleChange} />
-           </label>
-           <input className="button" type="submit" value="Submit" />
-         </form>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" id="customCidField" onChange={this.handleChange} placeholder="Custom IPFS hash to load" />
+          </form>
       );
     }
 }
@@ -79,54 +76,48 @@ function CustomCidFormHandler() {
 function App() {
   return (
   <div className="container">
+    <Router>
     <div className="row">
       <div className="column">
         <h1>IPFS video player</h1>
+        <CustomCidFormHandler />
       </div>
     </div>
-    <Router>
 
     <div className="row">
-      <div className="column column-25">
-      <p>Welcome to the IPFS video player</p>
-      <p>
-        Below are a few example video's that are nice to start with:
-        <ul>
-          <li><Link to="/ipfs/QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie">Blender Half full</Link></li>
-          <li><Link to="/ipfs/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC">ipfstube.erindachtler.me</Link></li>
-          <li><Link to="/ipfs/QmUG7eDU26xrqxuZ2evEPzAkARMTsufUutxaKBZibxunE6">Monkey</Link></li>
-        </ul>
-      </p>
-
-
-      </div>
-      <div className="column column-75">
+      <div className="column">
         <Switch>
           <Route path="/ipfs/:cid" children={<VideoPlayerRouteHandler />} />
         </Switch>
       </div>
     </div>
+
     <div className="row">
       <div className="column">
-        <CustomCidFormHandler />
+      <p>Welcome to the IPFS video player</p>
+      <p>
+        At the top, you can use the form to put in your custom <a href="https://ipfs.io">IPFS</a> <a href="https://docs.ipfs.io/guides/concepts/cid/">content id</a>.
+        If you have not found any good example to view yet, you can try <Link to="/ipfs/QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie">Blender Half full</Link>,
+        the <Link to="/ipfs/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC">demo video</Link> from <a href="https://ipfstube.erindachtler.me/">https://ipfstube.erindachtler.me/</a>,
+        or simply a <Link to="/ipfs/QmUG7eDU26xrqxuZ2evEPzAkARMTsufUutxaKBZibxunE6">monkey video</Link> downloaded from Pexels.
+      </p>
+      <p>
+        Finaly <a href="https://www.reddit.com/r/IPFS_Hashes">reddit IPFS_Hashes</a> might have some IPFS video hashes as well.
+      </p>
       </div>
     </div>
     </Router>
     <div className="row">
       <div className="column">
-
-<p>There is a also <a href="https://kodi.tv/">Kodi</a> plugin under development
-   that will complement this website, available at:
-   <a href="https://github.com/bneijt/ipfs-video-kodi">https://github.com/bneijt/ipfs-video-kodi</a>
-</p>
-<p>There is also a project to help you host your own IPFS pinning gateway easily:
-   <a href="https://github.com/bneijt/ipfs-video-gateway">https://github.com/bneijt/ipfs-video-gateway</a>
-</p>
-<p>To see what may be part of it's future,
-  visit <a href="https://ipfstube.erindachtler.me/">https://ipfstube.erindachtler.me/</a>
-  who has a great <a href="https://ipfstube.erindachtler.me/v/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC">demo video</a>.
-</p>
-
+      <h2>Other works under the same project</h2>
+      <p>
+        A <a href="https://kodi.tv/">Kodi</a> plugin under development
+        that will complement this website, available at:
+        <a href="https://github.com/bneijt/ipfs-video-kodi">https://github.com/bneijt/ipfs-video-kodi</a>
+      </p>
+      <p>A project to help you host your own IPFS pinning gateway easily:
+         <a href="https://github.com/bneijt/ipfs-video-gateway">https://github.com/bneijt/ipfs-video-gateway</a>
+      </p>
 </div>
 </div>
 
