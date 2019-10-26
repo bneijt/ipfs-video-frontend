@@ -35,6 +35,7 @@ input[type='text'],
 input[type='url'],
 textarea,
 select {
+  font-family: monospace;
   background-color: transparent;
   color: #6D6B61;
   border: 0.1rem solid #F6BF03;

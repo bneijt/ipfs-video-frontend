@@ -53,6 +53,8 @@ class VideoPlayerComponent extends React.Component {
             controls
             playing
             muted
+            width=""
+            height=""
           />
     );
   }
@@ -94,11 +96,12 @@ function App() {
 
     <div className="row">
       <div className="column">
-      <p>Welcome to the IPFS video player</p>
+      <h2>Welcome to the IPFS video player</h2>
       <p>
         At the top, you can use the form to put in your custom <a href="https://ipfs.io">IPFS</a> <a href="https://docs.ipfs.io/guides/concepts/cid/">content id</a>.
         If you have not found any good example to view yet, you can try <Link to="/ipfs/QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie">Blender Half full</Link>,
         the <Link to="/ipfs/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC">demo video</Link> from <a href="https://ipfstube.erindachtler.me/">https://ipfstube.erindachtler.me/</a>,
+        a <Link to="/ipfs/QmaAQgoeMPWEbfp8SX4xNeJNJUqdeBdQ6MoTdNXGbmgCvi">talk by Alan Kay</Link>,
         or simply a <Link to="/ipfs/QmUG7eDU26xrqxuZ2evEPzAkARMTsufUutxaKBZibxunE6">monkey video</Link> downloaded from Pexels.
       </p>
       <p>
