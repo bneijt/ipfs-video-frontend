@@ -114,6 +114,9 @@ function App() {
         a <Link to="/ipfs/QmawxGDUERBSJpyosS4KqiDCHSBwPihoGuDLw8bYrE2u6f">talk by Alan Kay</Link>,
         the free movie <Link to="/ipfs/Qmey31a4QZrBtSUApGexRLdvN8zQXCajqxjDCBrKj4LBk5">Sita sings the blues</Link>,
         <Link to="/ipfs/QmScwZZKbYN67U9QqjCP6pQVpjNwfBmQwXwMkyWuQ4YcNP">Big Buck Bunny</Link>,
+        <a href="http://www.caminandes.com/">Caminandes</a>  <Link to="/ipfs/QmQn4Wih8PYHBzrkq55y4gnrhe2z9SYtYnsLrJHGenNTXC">1</Link>,
+        <Link to="/ipfs/QmWherR5qe1eyTpLrVQTLm67RR8jx7QhD4JbFY4CDBvzsh">2</Link>,
+        <Link to="/ipfs/Qmf9AjaGDrAStj55mU2bkpa7jHMyD6tbDp5CZZfLsa6GgV">3</Link>
         or simply a <Link to="/ipfs/QmTYqoPYf7DiVebTnvwwFdTgsYXg2RnuPrt8uddjfW2kHS">monkey video</Link> downloaded from Pexels.
       </p>
       <p>
