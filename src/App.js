@@ -109,10 +109,12 @@ function App() {
       <h2>Welcome to the IPFS video player</h2>
       <p>
         At the top, you can use the form to put in your custom <a href="https://ipfs.io">IPFS</a> <a href="https://docs.ipfs.io/guides/concepts/cid/">content id</a>.
-        If you have not found any good example to view yet, you can try <Link to="/ipfs/QmcuAfSwwrrMqCvaFXbEZWsWfF7TyPKHocFeNqsSQT5Eie">Blender Half full</Link>,
+        If you have not found any good example to view yet, you can try <Link to="/ipfs/QmaNhV3gWt9TuDpWakUsBDSZw3CuNjur1YXqHV7zxzZrAZ">Blender Half full</Link>,
         the <Link to="/ipfs/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC">demo video</Link> from <a href="https://ipfstube.erindachtler.me/">https://ipfstube.erindachtler.me/</a>,
-        a <Link to="/ipfs/QmaAQgoeMPWEbfp8SX4xNeJNJUqdeBdQ6MoTdNXGbmgCvi">talk by Alan Kay</Link>,
-        or simply a <Link to="/ipfs/QmUG7eDU26xrqxuZ2evEPzAkARMTsufUutxaKBZibxunE6">monkey video</Link> downloaded from Pexels.
+        a <Link to="/ipfs/QmawxGDUERBSJpyosS4KqiDCHSBwPihoGuDLw8bYrE2u6f">talk by Alan Kay</Link>,
+        the free movie <Link to="/ipfs/Qmey31a4QZrBtSUApGexRLdvN8zQXCajqxjDCBrKj4LBk5">Sita sings the blues</Link>,
+        <Link to="/ipfs/QmScwZZKbYN67U9QqjCP6pQVpjNwfBmQwXwMkyWuQ4YcNP">Big Buck Bunny</Link>,
+        or simply a <Link to="/ipfs/QmTYqoPYf7DiVebTnvwwFdTgsYXg2RnuPrt8uddjfW2kHS">monkey video</Link> downloaded from Pexels.
       </p>
       <p>
         Finaly <a href="https://www.reddit.com/r/IPFS_Hashes">reddit IPFS_Hashes</a> might have some IPFS video hashes as well.
