@@ -46,6 +46,15 @@ class CustomCidFormComponent extends React.Component {
 
 
 class VideoPlayerComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDuration = this.handleDuration.bind(this);
+  }
+
+  handleDuration(a,b,c) {
+    fetch("http://gw.ipfs.video/tags/" + this.props.cid);
+  }
+
   render() {
     return (
           <ReactPlayer
@@ -53,6 +62,7 @@ class VideoPlayerComponent extends React.Component {
             controls
             playing
             muted
+            onDuration={this.handleDuration}
             width=""
             height=""
           />
