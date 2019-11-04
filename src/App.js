@@ -48,9 +48,15 @@ class CustomCidFormComponent extends React.Component {
 class VideoPlayerComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      gateway: "https://ipfs.io/ipfs/"
+    }
     this.handleDuration = this.handleDuration.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
-
+  handleError(event) {
+    this.setState({gateway: "http://gw.ipfs.video/ipfs/"});
+  }
   handleDuration(a,b,c) {
     fetch("http://gw.ipfs.video/tags/" + this.props.cid);
   }
@@ -58,11 +64,12 @@ class VideoPlayerComponent extends React.Component {
   render() {
     return (
           <ReactPlayer
-            url={"http://gw.ipfs.video/ipfs/" + this.props.cid}
+            url={this.state.gateway + this.props.cid}
             controls
             playing
             muted
             onDuration={this.handleDuration}
+            onError={this.handleError}
             width=""
             height=""
           />
