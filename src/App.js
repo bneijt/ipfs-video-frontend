@@ -77,6 +77,29 @@ class VideoPlayerComponent extends React.Component {
   }
 }
 
+class TagsListComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tags: []
+    }
+  }
+  componentDidMount() {
+    fetch("https://gw.ipfs.video/tags/list")
+      .then(response => response.json())
+      .then(data => this.setState({ tags: data }));
+  }
+  render() {
+    return (
+      <p>
+        {this.state.tags.map(cid =>
+          <span><a href={"/#/ipfs/" + cid}>{cid}</a> </span>
+        )}
+      </p>
+    );
+  }
+}
+
 function VideoPlayerRouteHandler() {
   let { cid } = useParams();
 
@@ -132,6 +155,15 @@ function App() {
           </div>
         </div>
       </Router>
+      <div className="row">
+        <div className="column">
+          <h2>Last played videos</h2>
+          <p>
+            This is a list of last played CIDs, <strong>beware this may contain anything</strong>!
+            <TagsListComponent />
+          </p>
+        </div>
+      </div>
       <div className="row">
         <div className="column">
           <h2>Other works under the same project</h2>
