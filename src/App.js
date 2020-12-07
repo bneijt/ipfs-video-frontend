@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import './App.css'
-
+//TODO take screenshot at width: 128 height: 72 resolution 2, 10 and 60 second marker
 import {
   HashRouter as Router,
   Switch,
@@ -53,7 +53,9 @@ class VideoPlayerComponent extends React.Component {
     }
     this.handleDuration = this.handleDuration.bind(this);
     this.handleError = this.handleError.bind(this);
+    this.handleProgress = this.handleProgress.bind(this);
   }
+
   handleError(event) {
     this.setState({ gateway: "http://gw.ipfs.video/ipfs/" });
   }
@@ -61,6 +63,9 @@ class VideoPlayerComponent extends React.Component {
     fetch("http://gw.ipfs.video/tags/" + this.props.cid);
   }
 
+  handleProgress(a,b,c) {
+    console.log(a,b,c);
+  }
   render() {
     return (
       <ReactPlayer
@@ -70,6 +75,7 @@ class VideoPlayerComponent extends React.Component {
         muted
         onDuration={this.handleDuration}
         onError={this.handleError}
+        onProgress={this.handleProgress}
         width=""
         height=""
       />
@@ -155,15 +161,6 @@ function App() {
           </div>
         </div>
       </Router>
-      <div className="row">
-        <div className="column">
-          <h2>Last played videos</h2>
-          <p>
-            This is a list of last played CIDs, <strong>beware this may contain anything</strong>!
-            <TagsListComponent />
-          </p>
-        </div>
-      </div>
       <div className="row">
         <div className="column">
           <h2>Other works under the same project</h2>
