@@ -56,12 +56,12 @@ class VideoPlayerComponent extends React.Component {
     this.handleProgress = this.handleProgress.bind(this);
   }
 
-  handleError(event) {
-    this.setState({ gateway: "http://gw.ipfs.video/ipfs/" });
-  }
-  handleDuration(a, b, c) {
-    fetch("http://gw.ipfs.video/tags/" + this.props.cid);
-  }
+  // handleError(event) {
+  //   this.setState({ gateway: "http://gw.ipfs.video/ipfs/" });
+  // }
+  // handleDuration(a, b, c) {
+  //   fetch("http://gw.ipfs.video/tags/" + this.props.cid);
+  // }
 
   handleProgress(a,b,c) {
     console.log(a,b,c);
@@ -91,9 +91,9 @@ class TagsListComponent extends React.Component {
     }
   }
   componentDidMount() {
-    fetch("https://gw.ipfs.video/tags/list")
-      .then(response => response.json())
-      .then(data => this.setState({ tags: data }));
+    // fetch("https://gw.ipfs.video/tags/list")
+    //   .then(response => response.json())
+    //   .then(data => this.setState({ tags: data }));
   }
   render() {
     return (
