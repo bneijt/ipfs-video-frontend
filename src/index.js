@@ -1,13 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'milligram';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { createApp } from "vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import App from "./App";
+import IpfsVideo from "./IpfsVideo";
+import IpfsGatewayVideo from "./IpfsGatewayVideo";
+import VueIpfs from './plugins/vue-ipfs';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const routes = [
+    { path: '/', component: App },
+    { path: '/ipfs/:ipfsPath+', component: IpfsVideo},
+    { path: '/gw/:ipfsPath+', component: IpfsGatewayVideo}
+  ]
+const router = createRouter({
+    history: createWebHistory(),
+    routes: routes
+})
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const app = createApp({});
+app.use(router)
+app.use(VueIpfs);
+app.mount("#app");
+
+
