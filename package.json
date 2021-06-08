@@ -17,6 +17,7 @@
     "build": "parcel build ./src/index.html"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "2.0.0-beta.2",
     "@parcel/transformer-vue": "2.0.0-beta.2"
   }
 }

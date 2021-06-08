@@ -1831,6 +1831,15 @@
     react-refresh "^0.9.0"
     semver "^5.4.1"
 
+"@parcel/transformer-sass@2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@parcel/transformer-sass/-/transformer-sass-2.0.0-beta.2.tgz#94a0afc37a2b2fe76e2be54cc331c2756918b25b"
+  integrity sha512-xJ21lbkSqq8p0+o6BMwE7BcyTmxq54QUW92KybdE5oP2Cc8DhP7vS/AdWsbl9L+6Gzf41SYIze8JCO+i5Ls6Rg==
+  dependencies:
+    "@parcel/plugin" "2.0.0-beta.2"
+    "@parcel/source-map" "2.0.0-alpha.4.21"
+    sass "^1.32.4"
+
 "@parcel/transformer-vue@2.0.0-beta.2":
   version "2.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/@parcel/transformer-vue/-/transformer-vue-2.0.0-beta.2.tgz#2bb08288293f0aa50403d3d77c1ec9dc36826ea0"
@@ -10107,6 +10116,13 @@ sass@^1.32.13:
   version "1.32.13"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.32.13.tgz#8d29c849e625a415bce71609c7cf95e15f74ed00"
   integrity sha512-dEgI9nShraqP7cXQH+lEXVf73WOPCse0QlFzSD8k+1TcOxCMwVXfQlr0jtoluZysQOyJGnfr21dLvYKDJq8HkA==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+
+sass@^1.32.4:
+  version "1.34.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.34.1.tgz#30f45c606c483d47b634f1e7371e13ff773c96ef"
+  integrity sha512-scLA7EIZM+MmYlej6sdVr0HRbZX5caX5ofDT9asWnUJj21oqgsC+1LuNfm0eg+vM0fCTZHhwImTiCU0sx9h9CQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 

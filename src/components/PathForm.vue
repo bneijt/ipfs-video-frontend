@@ -1,15 +1,33 @@
 <template>
-  <div>
-    <p>
-      Will try ipfs, gateway otherwise
-      <input
-        placeholder="IPFS path or CID"
-        name="input"
-        v-model.trim="ipfsPath"
-      />
-      <button @click="tryIpfs">Try IPFS directly</button>
-      <button @click="tryGateway">Try ipfs.io gateway</button>
-    </p>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <label class="label">IPFS Path</label>
+        <div class="control">
+          <input
+            placeholder="IPFS path or CID"
+            class="input is-link"
+            v-bind:class="{ 'is-danger': isInvalidIpfsPath }"
+            type="text"
+            v-model.trim="ipfsPath"
+          />
+        </div>
+        <p class="help">
+          For more information on this, read the
+          <a href="/">help text on the homepage</a>.
+        </p>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button @click="useIpfs" class="button">Use IPFS directly</button>
+        </div>
+        <div class="control">
+          <button @click="useGateway" class="button">
+            Use ipfs.io gateway
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,16 +36,29 @@ const MIN_CID_LENGTH = 46;
 
 export default {
   data() {
-    const ipfsPath = this.$route.params.ipfsPath.join("/");
+    var ipfsPath = "";
+    if (this.$route.params.ipfsPath !== undefined) {
+      ipfsPath = this.$route.params.ipfsPath.join("/");
+    }
     return {
       ipfsPath: ipfsPath,
     };
   },
+  computed: {
+    isInvalidIpfsPath() {
+      if (this.ipfsPath !== undefined) {
+        return (
+          this.ipfsPath.length > 0 && this.ipfsPath.length < MIN_CID_LENGTH
+        );
+      }
+      return false;
+    },
+  },
   methods: {
-    tryIpfs() {
+    useIpfs() {
       this.$router.push(`/ipfs/${this.ipfsPath}`);
     },
-    tryGateway() {
+    useGateway() {
       this.$router.push(`/gw/${this.ipfsPath}`);
     },
   },

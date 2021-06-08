@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <path-form />
+  <div class="block has-text-centered">
     <video ref="video" v-bind:src="gatewayUrl" controls muted autoplay />
+    <p>Video playing from ipfs.io gateway.</p>
+  </div>
+  <div class="block">
+    <path-form />
   </div>
 </template>
 

@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="block has-text-centered">
+      <video ref="video" controls muted autoplay />
+      <p>Status: {{ status }}</p>
+  </div>
+  <div class="block">
     <path-form />
-    <video ref="video" controls muted autoplay />
-    <p>Status: {{ status }}</p>
   </div>
 </template>
 
