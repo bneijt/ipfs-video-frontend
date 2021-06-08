@@ -4,6 +4,7 @@
   "main": "index.html",
   "license": "MIT",
   "dependencies": {
+    "bulma": "^0.9.2",
     "ipfs": "^0.55.3",
     "parcel": "^2.0.0-beta.2",
     "pug": "^3.0.2",
