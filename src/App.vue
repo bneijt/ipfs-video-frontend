@@ -12,11 +12,11 @@
           <a href="/gw/QmaNhV3gWt9TuDpWakUsBDSZw3CuNjur1YXqHV7zxzZrAZ"
             >Blender Half full</a
           >, the
-          <a href="/gw/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC"
+          <a href="/ipfs/QmSTzsKPwsbyQQ8xQ92G34mmnjDNs7LGk88UGcKDPTZExh"
             >demo video</a
           > from
           <a href="https://ipfstube.erindachtler.me/"
-            >https://ipfstube.erindachtler.me/</a
+            >ipfstube.erindachtler.me</a
           >, a
           <a href="/gw/QmawxGDUERBSJpyosS4KqiDCHSBwPihoGuDLw8bYrE2u6f"
             >talk by Alan Kay</a
@@ -41,15 +41,31 @@
           <a href="https://www.reddit.com/r/IPFS_Hashes">reddit IPFS_Hashes</a>
           might have some IPFS video hashes as well.
         </p>
-        <h2>See also</h2>
-        <p>The <a href="https://github.com/bneijt/ipfs-video-frontend">github project with the code for this frontend</a>.
+        <h2>IPFS directly vs gateway</h2>
+        <p>IPFS directly is the coolest option, it uses ipfs-js in the browser to stream the video. However, there is <strong>only support for VP8 video with opus audio in a webm container</strong>. Meanwhile the gateway uses ipfs.io to directly download the video and allows for all content that is currently supported by your browsers video element. 
         </p>
+        <p>If you want to host a video directly from IPFS, make sure you recode it first. For example, to recode a file called <code>monkey.avi</code> you could use <code>ffmpeg</code> with the following commandline:
+        <pre>
+          <code>
+          </code>
+        </pre>
+        </p>
+        <h2>Submit issues</h2>
+        <p>
+          This project is open source and you are invited to submit issues and bugs at <a href="https://github.com/bneijt/ipfs-video-frontend">the Github project page</a>.
+        </p>
+        <h2>See also</h2>
         <p>
           A <a href="https://kodi.tv/">Kodi</a> plugin under development that
           will complement this website, available at:<a
             href="https://github.com/bneijt/ipfs-video-kodi"
             >https://github.com/bneijt/ipfs-video-kodi</a
           >
+        </p>
+        <p>
+          <a
+            href="https://pinata.cloud/"
+            >Pinata</a>: a simple web interface to easily manage and pin content on IPFS.
         </p>
         <p>
           A project to help you host your own IPFS pinning gateway easily:<a
