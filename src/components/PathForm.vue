@@ -2,7 +2,11 @@
   <div>
     <p>
       Will try ipfs, gateway otherwise
-      <input placeholder="IPFS path or CID" name="input" v-model.trim="ipfsPath" />
+      <input
+        placeholder="IPFS path or CID"
+        name="input"
+        v-model.trim="ipfsPath"
+      />
       <button @click="tryIpfs">Try IPFS directly</button>
       <button @click="tryGateway">Try ipfs.io gateway</button>
     </p>
@@ -14,17 +18,18 @@ const MIN_CID_LENGTH = 46;
 
 export default {
   data() {
+    const ipfsPath = this.$route.params.ipfsPath.join("/");
     return {
-      ipfsPath: "",
+      ipfsPath: ipfsPath,
     };
   },
   methods: {
     tryIpfs() {
-        this.$router.push(`/ipfs/${this.ipfsPath}`);
-    }
+      this.$router.push(`/ipfs/${this.ipfsPath}`);
+    },
     tryGateway() {
-        this.$router.push(`/gw/${this.ipfsPath}`);
-    }
+      this.$router.push(`/gw/${this.ipfsPath}`);
+    },
   },
 };
 </script>

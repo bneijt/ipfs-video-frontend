@@ -1,15 +1,10 @@
 <template>
   <div>
-    <p>
-      Will try ipfs, gateway otherwise
-      <input placeholder="ipfs path" name="input" v-model.trim="ipfsPath" />
-    </p>
+    <path-form />
   </div>
 </template>
 
 <script>
-
-
 const MIN_CID_LENGTH = 46;
 
 export default {

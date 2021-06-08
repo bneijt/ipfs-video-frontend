@@ -1,5 +1,6 @@
 <template>
   <div>
+    <path-form />
     <video ref="video" controls muted autoplay />
     <p>Status: {{ status }}</p>
   </div>
@@ -10,14 +11,12 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
   console.log(`Loading "${path}" from ipfs directly`);
   var mediaSource = new MediaSource();
 
-  mediaSource.addEventListener("sourceended", function sourceEnded(){
-    //Check video video_element
-    console.log("Ended", mediaSource);
+  mediaSource.addEventListener("sourceended", function sourceEnded() {
+    console.log("sourceended");
   });
   mediaSource.addEventListener("sourceopen", onMediaSourceOpen);
-  mediaSource.addEventListener("sourceclose", function sourceClose(){
-    //Check video video_element
-    console.log("Ended", mediaSource);
+  mediaSource.addEventListener("sourceclose", function sourceClose() {
+    console.log("sourceclose");
   });
 
   async function onMediaSourceOpen() {
@@ -104,8 +103,7 @@ export default {
           ipfs,
           ipfsPath,
           function errorHandler(msg, switchToGateway) {
-            console.log("FAILED TO DIRECTLY USE IPFS", msg);
-            component.$router.push(`/gateway/${ipfsPath}`);
+            this.status = `Failed to use IPFS directly: ${msg}`;
           }
         );
         if (mediaSource !== undefined) {
