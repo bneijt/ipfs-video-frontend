@@ -8,15 +8,24 @@
     "vue": "^3.0.11",
     "vue-router": "^4.0.8"
   },
+  "app": "dist/index.html",
+  "targets": {
+    "app": {
+      "context": "browser",
+      "engines": {
+        "browsers": "last 2 versions and not dead and > 2%"
+      }
+    }
+  },
   "scripts": {
     "start": "parcel serve src/index.html",
     "build": "parcel build src/index.html"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-beta.2",
-    "sass": "^1.32.13",
     "@parcel/transformer-sass": "2.0.0-beta.2",
-    "@parcel/transformer-vue": "2.0.0-beta.2"
+    "@parcel/transformer-vue": "2.0.0-beta.2",
+    "parcel": "^2.0.0-beta.2",
+    "sass": "^1.32.13"
   },
   "browserslist": [
     "last 2 versions and not dead and > 2%"

@@ -47,8 +47,10 @@
         <p>If you want to host a video directly from IPFS, make sure you recode it first. For example, to recode a file called <code>monkey.avi</code> you could use <code>ffmpeg</code> with the following commandline:
         <pre>
           <code>
+          ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K monkey.webm
           </code>
         </pre>
+        Host the resulting `monkey.webm` on IPFS and point this website to the CID.
         </p>
         <h2>Submit issues</h2>
         <p>
@@ -65,7 +67,7 @@
         <p>
           <a
             href="https://pinata.cloud/"
-            >Pinata</a>: a simple web interface to easily manage and pin content on IPFS.
+            >Pinata</a>: a simple web interface to easily manage and host/pin content on IPFS.
         </p>
         <p>
           A project to help you host your own IPFS pinning gateway easily:<a
