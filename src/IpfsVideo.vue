@@ -10,7 +10,7 @@
 
 <script>
 async function load_ipfs_path(ipfs, path, errorHandler) {
-  console.log(`Loading "${path}" from ipfs directly`);
+  console.log("Loading from ipfs directly");
   var mediaSource = new MediaSource();
 
   mediaSource.addEventListener("sourceended", function sourceEnded() {
