@@ -7,6 +7,7 @@
           <input
             placeholder="IPFS path or CID"
             class="input is-link"
+            minlength="46"
             v-bind:class="{ 'is-danger': isInvalidIpfsPath }"
             type="text"
             v-model.trim="ipfsPath"
@@ -23,6 +24,7 @@
             @click="useIpfs"
             class="button"
             title="Use js-ipfs from the browser"
+            v-bind:disabled="isInvalidIpfsPath"
           >
             Use IPFS directly
           </button>
@@ -32,6 +34,7 @@
             @click="useGateway"
             class="button"
             title="Use the ipfs.io HTTP gateway"
+            v-bind:disabled="isInvalidIpfsPath"
           >
             Use ipfs.io gateway
           </button>
@@ -56,13 +59,10 @@ export default {
   },
   computed: {
     isInvalidIpfsPath() {
-      if (this.ipfsPath !== undefined) {
-        return (
-          this.ipfsPath.length > 0 && this.ipfsPath.length < MIN_CID_LENGTH
-        );
-      }
-      return false;
-    },
+      return (
+        this.ipfsPath === undefined || this.ipfsPath.length < MIN_CID_LENGTH
+      );
+    }
   },
   methods: {
     useIpfs() {
