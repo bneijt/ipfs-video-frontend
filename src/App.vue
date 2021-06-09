@@ -14,30 +14,27 @@
           >, a
           <router-link to="/ipfs/QmcgsX3wy8tLUXpKwgwUQZnEgsU6LGJuuXyk4R7uGryefL"
             >talk by Alan Kay</router-link
-          >, or the Caminandes series
+          >,
+          <router-link to="/ipfs/QmbGtJg23skhvFmu9mJiePVByhfzu5rwo74MEkVDYAmF5T">Big Buck Bunny</router-link>,
+          or the Caminandes series
           <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/01_llama_drama_1080p.webm">1</router-link>,
           <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/02_gran_dillama_1080p.webm">2</router-link>,
           <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/03_caminandes_llamigos_1080p.webm">3</router-link>.
         </p>
-        <p>
-          Finaly
-          <a href="https://www.reddit.com/r/IPFS_Hashes">reddit IPFS_Hashes</a>
-          might have some IPFS video hashes as well.
-        </p>
         <h2>IPFS directly vs gateway</h2>
-        <p>IPFS directly is the coolest option, it uses ipfs-js in the browser to stream the video. However, there is <strong>only support for VP8 video with opus audio in a webm container</strong>. Meanwhile the gateway uses ipfs.io to directly download the video and allows for all content that is currently supported by your browsers video element. 
+        <p>IPFS directly is the coolest option, it uses <a href="https://js.ipfs.io/">js-ipfs</a> in the browser to stream the video. 
+        However, there is <em>only support for VP8 video with OPUS audio in a WEBM container</em>.
+        </p>
+        <p>
+         The gateway uses <a href="https://ipfs.io/">ipfs.io</a> to access the video via an HTTP gateway. This supports all video content supported by your browser, but does not use cool technology. 
         </p>
         <p>If you want to host a video directly from IPFS, make sure you recode it first. For example, to recode a file called <code>monkey.avi</code> you could use <code>ffmpeg</code> with the following commandline:
-        <pre>
-          <code>
-          ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K monkey.webm
-          </code>
-        </pre>
-        Host the resulting `monkey.webm` on IPFS and point this website to the CID.
+        <pre>ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K monkey.webm</pre>
+        Host the resulting <code>monkey.webm</code> on IPFS and point this website to the CID or path. If you have bash available you can also download <a href="https://github.com/bneijt/ipfs-video-frontend/blob/main/recode_webm.sh">a recode script from github</a>.
         </p>
         <h2>Submit issues</h2>
         <p>
-          This project is open source and you are invited to submit issues and bugs at <a href="https://github.com/bneijt/ipfs-video-frontend">the Github project page</a>.
+          This project is open source and you are invited to submit issues at <a href="https://github.com/bneijt/ipfs-video-frontend">the Github project page</a>.
         </p>
         <h2>See also</h2>
         <p>
@@ -52,8 +49,11 @@
             href="https://pinata.cloud/"
             >Pinata</a>: a simple web interface to easily manage and host/pin content on IPFS.
         </p>
+        <p>          
+          <a href="https://www.reddit.com/r/IPFS_Hashes">Reddit IPFS_Hashes</a>: a reddit page where people share IPFS hashes, some are video hashes as well.
+        </p>
         <p>
-          A project to help you host your own IPFS pinning gateway easily:<a
+          A project to help you host your own IPFS pinning gateway easily: <a
             href="https://github.com/bneijt/ipfs-video-gateway"
             >https://github.com/bneijt/ipfs-video-gateway</a
           >

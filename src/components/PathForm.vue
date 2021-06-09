@@ -19,10 +19,20 @@
       </div>
       <div class="field is-grouped">
         <div class="control">
-          <button @click="useIpfs" class="button">Use IPFS directly</button>
+          <button
+            @click="useIpfs"
+            class="button"
+            title="Use js-ipfs from the browser"
+          >
+            Use IPFS directly
+          </button>
         </div>
         <div class="control">
-          <button @click="useGateway" class="button">
+          <button
+            @click="useGateway"
+            class="button"
+            title="Use the ipfs.io HTTP gateway"
+          >
             Use ipfs.io gateway
           </button>
         </div>
