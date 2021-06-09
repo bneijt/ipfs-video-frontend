@@ -97,10 +97,6 @@ export default {
         this.status = `Loading ${ipfsPath} from ipfs directly`;
 
         video_element = this.$refs["video"];
-        // alan QmawxGDUERBSJpyosS4KqiDCHSBwPihoGuDLw8bYrE2u6f
-        // city QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC
-        // frag bunny: QmR6QvFUBhHQ288VmpHQboqzLmDrrC2fcTUyT4hSMCwFyj
-        // opus city QmSTzsKPwsbyQQ8xQ92G34mmnjDNs7LGk88UGcKDPTZExh
         var mediaSource = await load_ipfs_path(
           ipfs,
           ipfsPath,

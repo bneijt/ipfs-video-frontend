@@ -9,32 +9,15 @@
           <a href="https://docs.ipfs.io/guides/concepts/cid/"
             >IPFS content id or path</a
           >. If you have not found any good example to view yet, you can try
-          <a href="/gw/QmaNhV3gWt9TuDpWakUsBDSZw3CuNjur1YXqHV7zxzZrAZ"
-            >Blender Half full</a
-          >, the
-          <a href="/ipfs/QmSTzsKPwsbyQQ8xQ92G34mmnjDNs7LGk88UGcKDPTZExh"
-            >demo video</a
-          > from
-          <a href="https://ipfstube.erindachtler.me/"
-            >ipfstube.erindachtler.me</a
+          <router-link to="/ipfs/QmQWM1qDPasxm5sXAQeVMfmhnECBzyYkLgfK23yPif1Ftx"
+            >Blender Half full</router-link
           >, a
-          <a href="/gw/QmawxGDUERBSJpyosS4KqiDCHSBwPihoGuDLw8bYrE2u6f"
-            >talk by Alan Kay</a
-          >, the free movie
-          <a href="/gw/Qmey31a4QZrBtSUApGexRLdvN8zQXCajqxjDCBrKj4LBk5"
-            >Sita sings the blues</a
-          >,
-          <a href="/gw/QmScwZZKbYN67U9QqjCP6pQVpjNwfBmQwXwMkyWuQ4YcNP"
-            >Big Buck Bunny</a
-          >, <a href="http://www.caminandes.com/">Caminandes</a>
-          <a href="/gw/QmQn4Wih8PYHBzrkq55y4gnrhe2z9SYtYnsLrJHGenNTXC">1</a>,
-          <a href="/gw/QmWherR5qe1eyTpLrVQTLm67RR8jx7QhD4JbFY4CDBvzsh">2</a>,
-          <a href="/gw/Qmf9AjaGDrAStj55mU2bkpa7jHMyD6tbDp5CZZfLsa6GgV">3</a> or
-          simply a
-          <a href="/gw/QmTYqoPYf7DiVebTnvwwFdTgsYXg2RnuPrt8uddjfW2kHS"
-            >monkey video</a
-          >
-          downloaded from Pexels.
+          <router-link to="/ipfs/QmcgsX3wy8tLUXpKwgwUQZnEgsU6LGJuuXyk4R7uGryefL"
+            >talk by Alan Kay</router-link
+          >, or the Caminandes series
+          <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/01_llama_drama_1080p.webm">1</router-link>,
+          <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/02_gran_dillama_1080p.webm">2</router-link>,
+          <router-link to="/ipfs/QmYHDhsgUgdKSAimguGC92MzQ8VNFHZw3yp6kAHwiXCFLm/03_caminandes_llamigos_1080p.webm">3</router-link>.
         </p>
         <p>
           Finaly

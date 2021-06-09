@@ -14,7 +14,7 @@
         </div>
         <p class="help">
           For more information on this, read the
-          <a href="/">help text on the homepage</a>.
+          <router-link to="/">help text on the homepage</router-link>.
         </p>
       </div>
       <div class="field is-grouped">
