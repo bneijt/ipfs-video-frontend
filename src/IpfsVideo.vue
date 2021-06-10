@@ -10,7 +10,6 @@
 
 <script>
 async function load_ipfs_path(ipfs, path, errorHandler) {
-  console.log("Loading from ipfs directly");
   var mediaSource = new MediaSource();
 
   mediaSource.addEventListener("sourceended", function sourceEnded() {
@@ -58,9 +57,7 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
         chunk = await asyncIterableContents.next();
       if (chunk.done) {
         sourceBuffer.removeEventListener("updateend", appendNext);
-        if (!sourceBuffer.updating && mediaSource.readyState === "open") {
-          mediaSource.endOfStream();
-        }
+        mediaSource.endOfStream();
       } else {
         sourceBuffer.appendBuffer(chunk.value);
       }
@@ -94,7 +91,7 @@ export default {
           ipfsPath = this.$route.params.ipfsPath.join("/");
 
         const { agentVersion, node_id } = await ipfs.id();
-        this.status = `Loading ${ipfsPath} from ipfs directly`;
+        this.status = `Loading from ipfs directly`;
 
         video_element = this.$refs["video"];
         var mediaSource = await load_ipfs_path(
