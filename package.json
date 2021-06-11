@@ -20,6 +20,10 @@
     "parcel": "^2.0.0-beta.2",
     "sass": "^1.32.13"
   },
+  "resolutions": {
+    "trim-newlines": "^3.0.1",
+    "electron": "^9.4.0"
+  },
   "browserslist": [
     "last 2 versions and not dead and > 2%"
   ]
