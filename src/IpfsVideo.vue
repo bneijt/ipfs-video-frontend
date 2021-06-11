@@ -59,7 +59,13 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
         sourceBuffer.removeEventListener("updateend", appendNext);
         mediaSource.endOfStream();
       } else {
-        sourceBuffer.appendBuffer(chunk.value);
+        try {
+          sourceBuffer.appendBuffer(chunk.value);
+        } catch (exp) {
+          //Quota exceeded if the video element was already removed
+          console.error("Failed to append video buffer.", exp)
+          sourceBuffer.removeEventListener("updateend", appendNext);
+        }
       }
     };
   }
