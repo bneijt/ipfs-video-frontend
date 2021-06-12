@@ -12,7 +12,31 @@
 </template>
 
 <script>
-async function load_ipfs_path(ipfs, path, errorHandler) {
+function mimeCodecFor(ba) {
+  //See also https://www.garykessler.net/library/file_sigs.html
+  // mime, offset, magic bytes
+  const mimes = [
+    ['video/mp4; codecs="avc1.42E01E, mp4a.40.2"', 4, [0X66, 0X74, 0X79, 0X70, 0X6D, 0X70, 0X34, 0X32]],
+    ['video/webm; codecs="vp8, opus"', 0, [0x1A, 0x45, 0xDF, 0xA3]],
+  ];
+
+  for (const match of mimes) {
+    const name = match[0],
+      magicBytesOffset = match[1],
+      magicBytes = match[2];
+    if (
+      magicBytes.every(function (value, index) {
+        return value === ba[magicBytesOffset + index];
+      })
+    ) {
+      return name;
+    }
+  }
+  // Default, is probably webm
+  return 'video/webm; codecs="vp8, opus"';
+}
+
+async function loadIpfsPath(ipfs, path, errorHandler) {
   var mediaSource = new MediaSource();
 
   mediaSource.addEventListener("sourceended", function sourceEnded() {
@@ -24,19 +48,6 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
   });
 
   async function onMediaSourceOpen() {
-    var mimeCodec = 'video/webm; codecs="vp8, opus"',
-      sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-    if (!MediaSource.isTypeSupported(mimeCodec)) {
-      errorHandler("Your browser does not support VP8 streams");
-      return;
-    }
-    sourceBuffer.addEventListener("abort", function (ev) {
-      errorHandler(ev);
-    });
-    sourceBuffer.addEventListener("error", function (ev) {
-      errorHandler(ev);
-    });
-
     try {
       for await (const file of ipfs.get(path)) {
         if (file.type == "dir") {
@@ -48,6 +59,19 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
           return;
         }
         var firstChunk = await file.content.next();
+        var mimeCodec = mimeCodecFor(firstChunk.value),
+          sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+
+        if (!MediaSource.isTypeSupported(mimeCodec)) {
+          errorHandler("Your browser does not support " + mimeCodec);
+          return;
+        }
+        sourceBuffer.addEventListener("abort", function (ev) {
+          errorHandler(ev);
+        });
+        sourceBuffer.addEventListener("error", function (ev) {
+          errorHandler(ev);
+        });
         sourceBuffer.addEventListener(
           "updateend",
           onUpdateEndContinue(file.content)
@@ -98,12 +122,17 @@ export default {
   },
   computed: {
     ipfsPath: function () {
-      return this.$route.params.ipfsPath.join("/");
+      if (this.$route.params.ipfsPath !== undefined) {
+        return this.$route.params.ipfsPath.join("/");
+      }
+      return "";
     },
   },
   watch: {
     ipfsPath(newPath, oldPath) {
-      this.loadVideo();
+      if (newPath !== undefined && newPath.length) {
+        this.loadVideo();
+      }
     },
   },
   methods: {
@@ -117,7 +146,7 @@ export default {
         this.status = "Loading";
 
         video_element = this.$refs["video"];
-        var mediaSource = await load_ipfs_path(
+        var mediaSource = await loadIpfsPath(
           ipfs,
           ipfsPath,
           function errorHandler(msg, reroute) {
