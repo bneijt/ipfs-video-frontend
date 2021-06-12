@@ -1,7 +1,7 @@
 <template>
   <div class="block has-text-centered">
     <video ref="video" v-bind:src="gatewayUrl" controls muted autoplay />
-    <p>Video playing from ipfs.io gateway.</p>
+    <p>Playing from <a v-bind:href="gatewayUrl">{{gatewayUrl}}</a>.</p>
   </div>
   <div class="block">
     <path-form />
@@ -10,11 +10,14 @@
 
 <script>
 export default {
-  data() {
-    const ipfsPath = this.$route.params.ipfsPath.join("/");
-    return {
-      gatewayUrl: `https://ipfs.io/ipfs/${ipfsPath}`,
-    };
+  computed: {
+    gatewayUrl: function () {
+      if (this.$route.params.ipfsPath !== undefined) {
+        const ipfsPath = this.$route.params.ipfsPath.join("/");
+        return `https://ipfs.io/ipfs/${ipfsPath}`;
+      }
+      return "";
+    },
   },
 };
 </script>
