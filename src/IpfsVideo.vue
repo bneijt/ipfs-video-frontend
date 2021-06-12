@@ -1,7 +1,10 @@
 <template>
   <div class="block has-text-centered">
     <video ref="video" controls muted autoplay />
-    <p>Status: {{ status }}</p>
+    <p>
+      {{ ipfsPath }} <br />
+      {{ status }}
+    </p>
   </div>
   <div class="block">
     <path-form />
@@ -36,6 +39,10 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
 
     try {
       for await (const file of ipfs.get(path)) {
+        if (file.type == "dir") {
+          errorHandler("This points to a directory", "ls");
+          return;
+        }
         if (!file.content) {
           errorHandler("Given path does not point to a file");
           return;
@@ -63,7 +70,7 @@ async function load_ipfs_path(ipfs, path, errorHandler) {
           sourceBuffer.appendBuffer(chunk.value);
         } catch (exp) {
           //Quota exceeded if the video element was already removed
-          console.error("Failed to append video buffer.", exp)
+          console.error("Failed to append video buffer.", exp);
           sourceBuffer.removeEventListener("updateend", appendNext);
         }
       }
@@ -87,24 +94,37 @@ export default {
     };
   },
   mounted: function () {
-    this.getIpfsNodeInfo();
+    this.loadVideo();
+  },
+  computed: {
+    ipfsPath: function () {
+      return this.$route.params.ipfsPath.join("/");
+    },
+  },
+  watch: {
+    ipfsPath(newPath, oldPath) {
+      this.loadVideo();
+    },
   },
   methods: {
-    async getIpfsNodeInfo() {
+    async loadVideo() {
       const component = this;
       try {
         const ipfs = await this.$ipfs,
-          ipfsPath = this.$route.params.ipfsPath.join("/");
+          ipfsPath = this.ipfsPath;
 
         const { agentVersion, node_id } = await ipfs.id();
-        this.status = `Loading from ipfs directly`;
+        this.status = "Loading";
 
         video_element = this.$refs["video"];
         var mediaSource = await load_ipfs_path(
           ipfs,
           ipfsPath,
-          function errorHandler(msg, switchToGateway) {
-            this.status = `Failed to use IPFS directly: ${msg}`;
+          function errorHandler(msg, reroute) {
+            component.status = `Failed to use IPFS directly: ${msg}`;
+            if (reroute !== undefined) {
+              component.$router.push(`/${reroute}/${ipfsPath}`);
+            }
           }
         );
         if (mediaSource !== undefined) {
