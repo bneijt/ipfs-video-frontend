@@ -1,7 +1,7 @@
 <template>
   <div class="block">
-    <h1 class="title">{{ ipfsPath }}</h1>
-    <h2 class="subtitle">IPFS block listing</h2>
+    <h1 class="title">{{ title }}</h1>
+    <h2 class="subtitle">IPFS listing</h2>
     <table class="table">
       <thead>
         <tr>
@@ -55,12 +55,18 @@ export default {
   computed: {
     ipfsPath: function () {
       if (this.$route.params.ipfsPath !== undefined) {
-        document.title =
-          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1] +
-          " - IPFS directory listing";
         return this.$route.params.ipfsPath.join("/");
       }
       return "";
+    },
+     title: function () {
+      var titleValue = "IPFS listing";
+      if (this.$route.params.ipfsPath !== undefined) {
+        titleValue =
+          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
+        document.title = titleValue + " - IPFS listing";
+      }
+      return titleValue;
     },
   },
   methods: {
