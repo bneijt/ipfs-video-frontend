@@ -1,9 +1,9 @@
 <template>
-  <div class="block has-text-centered">
+  <div class="block">
+    <h1 class="title">{{ title }}</h1>
     <video ref="video" controls muted autoplay />
-    <p>
-      {{ ipfsPath }} <br />
-      {{ status }}
+    <p class="has-text-right"><small>
+      {{ status }}</small>
     </p>
   </div>
   <div class="block">
@@ -184,11 +184,17 @@ export default {
     this.loadVideo();
   },
   computed: {
+    title: function () {
+      var titleValue = "IPFS video player";
+      if (this.$route.params.ipfsPath !== undefined) {
+        titleValue =
+          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
+        document.title = titleValue + " - IPFS video player";
+      }
+      return titleValue;
+    },
     ipfsPath: function () {
       if (this.$route.params.ipfsPath !== undefined) {
-        document.title =
-          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1] +
-          " - IPFS video";
         return this.$route.params.ipfsPath.join("/");
       }
       return "";
