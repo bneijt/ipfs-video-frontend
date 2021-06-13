@@ -6,14 +6,16 @@
       <a href="https://docs.ipfs.io/guides/concepts/cid/"
         >IPFS content id or path</a
       >
-      of the video you would like to see and choose to use either IPFS directly or a gateway.
+      of the video you would like to see and choose to use either IPFS directly
+      or a gateway.
     </p>
     <p>
       If you have not found any good example to view yet, you can try
       <router-link to="/ipfs/QmQWM1qDPasxm5sXAQeVMfmhnECBzyYkLgfK23yPif1Ftx"
         >Blender Half full</router-link
       >, a
-      <router-link to="/ipfs/Qme4QjkyZQuFtN2SDhELfXVshMyAEec53jaFQ8kR4maLeV/Alan Kay at OOPSLA 1997 - The computer revolution hasnt happened yet.webm"
+      <router-link
+        to="/ipfs/Qme4QjkyZQuFtN2SDhELfXVshMyAEec53jaFQ8kR4maLeV/Alan Kay at OOPSLA 1997 - The computer revolution hasnt happened yet.webm"
         >talk by Alan Kay</router-link
       >,
       <router-link to="/ipfs/Qmcd7D6TnnzZzsk12DBwCMRYx1a8TVX4tq4eemYqspL4Rv"
@@ -89,6 +91,14 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
         href="https://github.com/bneijt/ipfs-video-kodi"
         >https://github.com/bneijt/ipfs-video-kodi</a
       >
+    </p>
+    <p>
+      <a href="https://ipfstube.erindachtler.me/">IPFSTube</a>: same idea, but
+      different implementation. Has a great
+      <a
+        href="https://ipfstube.erindachtler.me/v/QmU1GSqu4w29Pt7EEM57Lhte8Lce6e7kuhRHo6rSNb2UaC"
+        >demo video</a
+      >.
     </p>
     <p>
       <a href="https://pinata.cloud/">Pinata</a>: a simple web interface to
