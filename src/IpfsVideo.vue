@@ -186,6 +186,9 @@ export default {
   computed: {
     ipfsPath: function () {
       if (this.$route.params.ipfsPath !== undefined) {
+        document.title =
+          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1] +
+          " - IPFS video";
         return this.$route.params.ipfsPath.join("/");
       }
       return "";

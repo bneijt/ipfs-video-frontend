@@ -18,7 +18,9 @@
             }}</router-link>
           </td>
           <td>{{ entry.size }}</td>
-          <td><code>{{ entry.cid }}</code></td>
+          <td>
+            <code>{{ entry.cid }}</code>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -52,7 +54,13 @@ export default {
   },
   computed: {
     ipfsPath: function () {
-      return this.$route.params.ipfsPath.join("/");
+      if (this.$route.params.ipfsPath !== undefined) {
+        document.title =
+          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1] +
+          " - IPFS directory listing";
+        return this.$route.params.ipfsPath.join("/");
+      }
+      return "";
     },
   },
   methods: {
