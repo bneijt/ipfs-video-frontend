@@ -3,7 +3,7 @@
     <h1 class="title">{{ title }}</h1>
     <video ref="video" v-bind:src="gatewayUrl" controls muted autoplay />
     <p>
-      Or use direct link <a v-bind:href="gatewayUrl">to ipfs.io</a>,
+      Direct link <a v-bind:href="gatewayUrl">to ipfs.io</a> or
       <a v-bind:href="localhostGatewayUrl" target="_blank">to localhost</a>.
     </p>
   </div>
