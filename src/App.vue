@@ -13,7 +13,7 @@
       <router-link to="/ipfs/QmQWM1qDPasxm5sXAQeVMfmhnECBzyYkLgfK23yPif1Ftx"
         >Blender Half full</router-link
       >, a
-      <router-link to="/ipfs/QmcgsX3wy8tLUXpKwgwUQZnEgsU6LGJuuXyk4R7uGryefL"
+      <router-link to="/ipfs/Qme4QjkyZQuFtN2SDhELfXVshMyAEec53jaFQ8kR4maLeV/Alan Kay at OOPSLA 1997 - The computer revolution hasnt happened yet.webm"
         >talk by Alan Kay</router-link
       >,
       <router-link to="/ipfs/Qmcd7D6TnnzZzsk12DBwCMRYx1a8TVX4tq4eemYqspL4Rv"
