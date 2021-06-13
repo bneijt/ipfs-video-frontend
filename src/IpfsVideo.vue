@@ -2,8 +2,8 @@
   <div class="block">
     <h1 class="title">{{ title }}</h1>
     <video ref="video" controls muted autoplay />
-    <p class="has-text-right"><small>
-      {{ status }}</small>
+    <p class="has-text-right">
+      <small>{{ status }}</small>
     </p>
   </div>
   <div class="block">

@@ -24,7 +24,9 @@
         </tr>
       </tbody>
     </table>
-    <p>{{ status }}</p>
+    <p class="has-text-right">
+      <small>{{ status }}</small>
+    </p>
   </div>
   <div class="block">
     <path-form />
@@ -59,7 +61,7 @@ export default {
       }
       return "";
     },
-     title: function () {
+    title: function () {
       var titleValue = "IPFS listing";
       if (this.$route.params.ipfsPath !== undefined) {
         titleValue =

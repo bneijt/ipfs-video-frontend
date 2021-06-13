@@ -1,12 +1,10 @@
 <template>
   <div class="block">
     <h1 class="title">Not found</h1>
-    <p><a href="/">go home</a></p>
+    <p><router-link to="/">go home</router-link></p>
   </div>
 </template>
 
 <script>
-export default {
-
-};
+export default {};
 </script>
