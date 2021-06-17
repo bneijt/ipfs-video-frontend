@@ -1,4 +1,5 @@
 <template>
+  <metainfo />
   <div class="block">
     <h1 class="title">{{ title }}</h1>
     <video ref="video" controls muted autoplay />
@@ -12,6 +13,8 @@
 </template>
 
 <script>
+import { useMeta } from "vue-meta";
+
 // MP4 mime info: https://gist.github.com/jimkang/f23ce12c359c7465e83f
 const V_VP8 = new TextEncoder().encode("V_VP8"),
   V_VP9 = new TextEncoder().encode("V_VP9"),
@@ -19,7 +22,7 @@ const V_VP8 = new TextEncoder().encode("V_VP8"),
   A_OPUS = new TextEncoder().encode("A_OPUS"),
   A_VORBIS = new TextEncoder().encode("A_VORBIS"),
   A_MP4A = new TextEncoder().encode("mp4a"),
-  V_AVC1_42E01E = [0x42, 0xE0, 0x1E],
+  V_AVC1_42E01E = [0x42, 0xe0, 0x1e],
   V_AVC1_640032 = [0x64, 0x00, 0x32];
 
 function isSubsequenceOf(subsequence, offset, data) {
@@ -194,7 +197,11 @@ export default {
       if (this.$route.params.ipfsPath !== undefined) {
         titleValue =
           this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
-        document.title = titleValue + " - IPFS video player";
+
+        useMeta({
+          title: titleValue + " - IPFS video player",
+          description: `Plays "${titleValue}" using the ipfs.io gateway service`,
+        });
       }
       return titleValue;
     },

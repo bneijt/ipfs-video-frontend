@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from 'vue-router';
+import { createMetaManager } from 'vue-meta'
+
 import App from "./App";
 import IpfsVideo from "./IpfsVideo";
 import PathForm from "./components/PathForm";
@@ -25,9 +27,11 @@ router.beforeEach((to, from) => {
   return true
 })
 
-const app = createApp({});
-app.use(router);
-app.use(VueIpfs);
+const app = createApp({})
+  .use(router)
+  .use(VueIpfs)
+  .use(createMetaManager())
+
 app.component('path-form', PathForm);
 app.mount("#app");
 
