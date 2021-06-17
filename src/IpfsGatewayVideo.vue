@@ -1,4 +1,5 @@
 <template>
+  <metainfo />
   <div class="block">
     <h1 class="title">{{ title }}</h1>
     <video ref="video" v-bind:src="gatewayUrl" controls muted autoplay />
@@ -13,6 +14,8 @@
 </template>
 
 <script>
+import { useMeta } from "vue-meta";
+
 export default {
   computed: {
     title: function () {
@@ -20,7 +23,10 @@ export default {
       if (this.$route.params.ipfsPath !== undefined) {
         titleValue =
           this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
-        document.title = titleValue + " - IPFS video player";
+        useMeta({
+          title: titleValue + " - IPFS video player",
+          description:  `Plays "${titleValue}" using the ipfs.io gateway service`,
+        });
       }
       return titleValue;
     },

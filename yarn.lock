@@ -10976,6 +10976,11 @@ vm-browserify@^1.1.2:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-meta@^3.0.0-alpha.9:
+  version "3.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-3.0.0-alpha.9.tgz#304999dc67337245947c2a08d7d94df984864c61"
+  integrity sha512-/ff7qNKy4c5NwmDl6N5XK2hhiXEdMeUxvk+SXCs40W9DOgu7VWGqPtgdSnXHnYMRoofkT/nKHE+vXklJ47r9Dw==
+
 vue-router@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.8.tgz#55d4290a3122444edbc91a3cd2492bb1d0cef494"

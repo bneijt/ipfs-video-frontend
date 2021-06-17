@@ -1,4 +1,5 @@
 <template>
+  <metainfo />
   <div class="content">
     <h2>Welcome to the IPFS video player</h2>
     <p>
@@ -118,9 +119,21 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
 </template>
 
 <script>
+import { useMeta } from "vue-meta";
+
 const MIN_CID_LENGTH = 46;
 
 export default {
+metaInfo: {
+      title: "IPFS video player",
+      description: "Play a video from the IPFS CDN using js-ipfs or the ipfs.io gateway."      
+    },
+  setup() {
+    useMeta({
+      title: "IPFS video player",
+      description: "Play a video from the IPFS CDN using js-ipfs or the ipfs.io gateway."      
+    });
+  },
   data() {
     return {
       ipfsPath: "",
