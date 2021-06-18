@@ -8,4 +8,4 @@ if [ -z "$INPUT" ]; then
 fi
 OUTPUT="${INPUT%%.*}".webm
 QUALITY=45
-ffmpeg -i "$INPUT" -c:v libvpx-vp9 -crf $QUALITY -b:v 0 -r 25 -c:a libopus -b:a 96K "$OUTPUT"
+ffmpeg -i "$INPUT" -c:v libvpx-vp9 -crf $QUALITY -b:v 0 -r 30 -c:a libopus -b:a 96K "$OUTPUT"
