@@ -118,22 +118,5 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
 </template>
 
 <script>
-
-const MIN_CID_LENGTH = 46;
-
-export default {
-  data() {
-    return {
-      ipfsPath: "",
-    };
-  },
-  watch: {
-    // whenever question changes, this function will run
-    ipfsPath(newPath, _) {
-      if (newPath.length >= MIN_CID_LENGTH) {
-        this.$router.push(`/ipfs/${newPath}`);
-      }
-    },
-  },
-};
+export default {};
 </script>
