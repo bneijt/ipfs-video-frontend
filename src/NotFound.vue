@@ -6,5 +6,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  metaInfo: {
+       title: "Not found",
+       description: "Page not found",
+       //meta: {"http-equiv":"refresh", content:"2;url=http://example.com/"}
+  },
+};
 </script>
