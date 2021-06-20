@@ -15,19 +15,33 @@
 
 <script>
 import { useMeta } from "vue-meta";
+import { ref, computed, onMounted } from 'vue'
 
 export default {
+
+/*
+  setup() {
+
+    const title = ref("title");
+    console.log("SETUP", this);
+    const computedMeta = computed(() => ({
+      title: `"${title.value}"`,
+    }))
+
+    useMeta(computedMeta)
+  },
+*/
+  metaInfo: {
+    title: "hello"
+  },
   computed: {
     title: function () {
       var titleValue = "IPFS video player";
       if (this.$route.params.ipfsPath !== undefined) {
         titleValue =
           this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
-        useMeta({
-          title: titleValue + " - IPFS video player",
-          description:  `Plays "${titleValue}" using the ipfs.io gateway service`,
-        });
       }
+      console.log("compute", this);
       return titleValue;
     },
     localhostGatewayUrl: function () {
