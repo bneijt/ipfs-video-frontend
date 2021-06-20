@@ -23,11 +23,6 @@ const router = createRouter({
   routes: routes
 })
 
-router.beforeEach((to, from) => {
-  document.title = "IPFS video player";
-  return true
-})
-
 const app = createApp(App)
   .use(router)
   .use(VueIpfs)

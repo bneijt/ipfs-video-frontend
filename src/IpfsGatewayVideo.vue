@@ -1,5 +1,4 @@
 <template>
-  <metainfo />
   <div class="block">
     <h1 class="title">{{ title }}</h1>
     <video ref="video" v-bind:src="gatewayUrl" controls muted autoplay />
@@ -15,34 +14,31 @@
 
 <script>
 import { useMeta } from "vue-meta";
-import { ref, computed, onMounted } from 'vue'
+import { useRoute } from "vue-router";
+
+function extractMeta(route) {
+  if (route.params.ipfsPath !== undefined) {
+    const titleValue = route.params.ipfsPath[route.params.ipfsPath.length - 1];
+    return {
+      title: titleValue,
+      description: `IPFS video player playing '${titleValue}' using the IPFS network`,
+    };
+  }
+  return {
+    title: "IPFS gateway video",
+    description: "IPFS video player using the ipfs.io gateway",
+  };
+}
 
 export default {
-
-/*
   setup() {
-
-    const title = ref("title");
-    console.log("SETUP", this);
-    const computedMeta = computed(() => ({
-      title: `"${title.value}"`,
-    }))
-
-    useMeta(computedMeta)
+    const route = useRoute();
+    useMeta(extractMeta(route));
   },
-*/
-  metaInfo: {
-    title: "hello"
-  },
+
   computed: {
     title: function () {
-      var titleValue = "IPFS video player";
-      if (this.$route.params.ipfsPath !== undefined) {
-        titleValue =
-          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
-      }
-      console.log("compute", this);
-      return titleValue;
+      return extractMeta(this.$route).title;
     },
     localhostGatewayUrl: function () {
       if (this.$route.params.ipfsPath !== undefined) {

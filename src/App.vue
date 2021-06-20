@@ -7,7 +7,11 @@
 import { useMeta } from "vue-meta";
 
 export default {
-  setup() {
+  metaInfo() {
+    return {
+      title: "IPFS video player",
+      description: "Play a video from the IPFS CDN using js-ipfs or the ipfs.io gateway."
+    };
   },
 };
 </script>

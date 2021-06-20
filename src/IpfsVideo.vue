@@ -1,5 +1,4 @@
 <template>
-  <metainfo />
   <div class="block">
     <h1 class="title">{{ title }}</h1>
     <video ref="video" controls muted autoplay />
@@ -14,6 +13,8 @@
 
 <script>
 import { useMeta } from "vue-meta";
+import { useRoute } from "vue-router";
+
 
 // MP4 mime info: https://gist.github.com/jimkang/f23ce12c359c7465e83f
 const V_VP8 = new TextEncoder().encode("V_VP8"),
@@ -166,6 +167,7 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
         } catch (exp) {
           //Quota exceeded if the video element was already removed
           console.error("Failed to append video buffer.", exp);
+          errorHandler(`Failed to append video buffer: '${exp}' `);
           sourceBuffer.removeEventListener("updateend", appendNext);
         }
       }
@@ -175,8 +177,26 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
   return mediaSource;
 }
 
+function extractMeta(route) {
+  if (route.params.ipfsPath !== undefined) {
+    const titleValue = route.params.ipfsPath[route.params.ipfsPath.length - 1];
+    return {
+      title: titleValue,
+      description: `IPFS video player playing '${titleValue}'`,
+    };
+  }
+  return {
+    title: "IPFS video player using js-ipfs",
+    description: "IPFS video player using js-ipfs",
+  };
+}
+
 export default {
   inject: ["ipfs"],
+  setup() {
+    const route = useRoute();
+    useMeta(extractMeta(route));
+  },
   data() {
     if (!window.MediaSource) {
       return {
@@ -193,17 +213,7 @@ export default {
   },
   computed: {
     title: function () {
-      var titleValue = "IPFS video player";
-      if (this.$route.params.ipfsPath !== undefined) {
-        titleValue =
-          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
-
-        useMeta({
-          title: titleValue + " - IPFS video player",
-          description: `Plays "${titleValue}" using the ipfs.io gateway service`,
-        });
-      }
-      return titleValue;
+      return extractMeta(this.$route).title;
     },
     ipfsPath: function () {
       if (this.$route.params.ipfsPath !== undefined) {
