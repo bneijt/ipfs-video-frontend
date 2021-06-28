@@ -1,35 +1,37 @@
 <template>
-  <div class="block">
-    <h1 class="title">{{ title }}</h1>
-    <h2 class="subtitle">IPFS listing</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Size</th>
-          <th><abbr title="Content Identifier">CID</abbr></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="entry in entries" v-bind:key="entry.cid">
-          <td>
-            <router-link v-bind:to="'/ipfs/' + entry.path">{{
-              entry.name
-            }}</router-link>
-          </td>
-          <td>{{ entry.size }}</td>
-          <td>
-            <code>{{ entry.cid }}</code>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="has-text-right">
-      <small>{{ status }}</small>
-    </p>
-  </div>
-  <div class="block">
-    <path-form />
+  <div>
+    <div class="block">
+      <h1 class="title">{{ title }}</h1>
+      <h2 class="subtitle">IPFS listing</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th><abbr title="Content Identifier">CID</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in entries" v-bind:key="entry.cid">
+            <td>
+              <router-link v-bind:to="'/ipfs/' + entry.path">{{
+                entry.name
+              }}</router-link>
+            </td>
+            <td>{{ entry.size }}</td>
+            <td>
+              <code>{{ entry.cid }}</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="has-text-right">
+        <small>{{ status }}</small>
+      </p>
+    </div>
+    <div class="block">
+      <PathForm />
+    </div>
   </div>
 </template>
 
@@ -51,21 +53,22 @@ export default {
       entries: [],
     };
   },
-  mounted: function () {
+  mounted: function() {
     this.getBlockInfo();
   },
   computed: {
-    ipfsPath: function () {
+    ipfsPath: function() {
       if (this.$route.params.ipfsPath !== undefined) {
         return this.$route.params.ipfsPath.join("/");
       }
       return "";
     },
-    title: function () {
+    title: function() {
       var titleValue = "IPFS listing";
       if (this.$route.params.ipfsPath !== undefined) {
-        titleValue =
-          this.$route.params.ipfsPath[this.$route.params.ipfsPath.length - 1];
+        titleValue = this.$route.params.ipfsPath[
+          this.$route.params.ipfsPath.length - 1
+        ];
         document.title = titleValue + " - IPFS listing";
       }
       return titleValue;

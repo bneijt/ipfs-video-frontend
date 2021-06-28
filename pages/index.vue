@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="content">
     <h1 class="title">Welcome to the IPFS video player</h1>
     <p>
@@ -46,7 +47,7 @@
     </p>
   </div>
   <div class="block">
-    <path-form />
+    <PathForm />
   </div>
   <div class="content">
     <h2>IPFS directly vs gateway</h2>
@@ -67,7 +68,7 @@
       could use <code>ffmpeg</code> with the following commandline:
     </p>
     <pre>
-ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K monkey.webm</pre
+ffmpeg -i monkey.avi -c:v libvpx -crf 40 -b:v 10M -r 30 -c:a libopus -b:a 96K monkey.webm</pre
     >
     <p>
       Host the resulting <code>monkey.webm</code> on IPFS and point this website
@@ -114,6 +115,7 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
         >https://github.com/bneijt/ipfs-video-gateway</a
       >
     </p>
+  </div>
   </div>
 </template>
 

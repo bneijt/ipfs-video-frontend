@@ -1,20 +1,19 @@
 <template>
-  <div class="block">
-    <h1 class="title">{{ title }}</h1>
-    <video ref="video" controls muted autoplay />
-    <p class="has-text-right">
-      <small>{{ status }}</small>
-    </p>
-  </div>
-  <div class="block">
-    <path-form />
+  <div>
+    <div class="block">
+      <h1 class="title">{{ title }}</h1>
+      <video ref="video" controls muted autoplay />
+      <p class="has-text-right">
+        <small>{{ status }}</small>
+      </p>
+    </div>
+    <div class="block">
+      <path-form />
+    </div>
   </div>
 </template>
 
 <script>
-import { useMeta } from "vue-meta";
-import { useRoute } from "vue-router";
-
 
 // MP4 mime info: https://gist.github.com/jimkang/f23ce12c359c7465e83f
 const V_VP8 = new TextEncoder().encode("V_VP8"),
@@ -27,7 +26,7 @@ const V_VP8 = new TextEncoder().encode("V_VP8"),
   V_AVC1_640032 = [0x64, 0x00, 0x32];
 
 function isSubsequenceOf(subsequence, offset, data) {
-  return subsequence.every(function (value, index) {
+  return subsequence.every(function(value, index) {
     return value === data[offset + index];
   });
 }
@@ -120,7 +119,8 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
 
   async function onMediaSourceOpen() {
     try {
-      for await (const file of ipfs.get(path)) {
+      for (const filePromise of ipfs.get(path)) {
+        const file = await filePromise;
         if (file.type == "dir") {
           errorHandler("This points to a directory", "ls");
           return;
@@ -138,10 +138,10 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
           errorHandler("Your browser does not support " + mimeCodec);
           return;
         }
-        sourceBuffer.addEventListener("abort", function (ev) {
+        sourceBuffer.addEventListener("abort", function(ev) {
           errorHandler(ev);
         });
-        sourceBuffer.addEventListener("error", function (ev) {
+        sourceBuffer.addEventListener("error", function(ev) {
           errorHandler(ev);
         });
         sourceBuffer.addEventListener(
@@ -208,14 +208,14 @@ export default {
       status: "Initializing...",
     };
   },
-  mounted: function () {
+  mounted: function() {
     this.loadVideo();
   },
   computed: {
-    title: function () {
+    title: function() {
       return extractMeta(this.$route).title;
     },
-    ipfsPath: function () {
+    ipfsPath: function() {
       if (this.$route.params.ipfsPath !== undefined) {
         return this.$route.params.ipfsPath.join("/");
       }
@@ -258,7 +258,7 @@ export default {
           mediaSource.addEventListener("sourceclose", function sourceClose() {
             component.status = "Media source closed";
           });
-          mediaSource.addEventListener("sourceopen", function () {
+          mediaSource.addEventListener("sourceopen", function() {
             URL.revokeObjectURL(video_element.src);
           });
         }

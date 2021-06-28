@@ -50,8 +50,8 @@ const MIN_CID_LENGTH = 46;
 export default {
   data() {
     var ipfsPath = "";
-    if (this.$route.params.ipfsPath !== undefined) {
-      ipfsPath = this.$route.params.ipfsPath.join("/");
+    if (this.$route.params.pathMatch !== undefined) {
+      ipfsPath = this.$route.params.pathMatch;
     }
     return {
       ipfsPath: ipfsPath,

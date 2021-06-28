@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import IPFS from 'ipfs'
 
 const plugin = {
@@ -8,9 +9,5 @@ const plugin = {
   }
 }
 
-// Auto-install
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(plugin)
-}
+Vue.use(plugin)
 
-export default plugin
