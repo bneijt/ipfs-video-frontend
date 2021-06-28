@@ -178,8 +178,9 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
 }
 
 function extractMeta(route) {
-  if (route.params.ipfsPath !== undefined) {
-    const titleValue = route.params.ipfsPath[route.params.ipfsPath.length - 1];
+  if (route.params.pathMatch !== undefined) {
+    const pathElements = route.params.pathMatch.split("/"),
+          titleValue = pathElements[pathElements.length - 1];
     return {
       title: titleValue,
       description: `IPFS video player playing '${titleValue}'`,
@@ -193,10 +194,6 @@ function extractMeta(route) {
 
 export default {
   inject: ["ipfs"],
-  setup() {
-    const route = useRoute();
-    useMeta(extractMeta(route));
-  },
   data() {
     if (!window.MediaSource) {
       return {
@@ -216,8 +213,8 @@ export default {
       return extractMeta(this.$route).title;
     },
     ipfsPath: function() {
-      if (this.$route.params.ipfsPath !== undefined) {
-        return this.$route.params.ipfsPath.join("/");
+      if (this.$route.params.pathMatch !== undefined) {
+        return this.$route.params.pathMatch;
       }
       return "";
     },
