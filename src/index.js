@@ -23,6 +23,7 @@ const router = createRouter({
   routes: routes
 })
 
+console.log("HERE")
 const app = createApp(App)
   .use(router)
   .use(VueIpfs)

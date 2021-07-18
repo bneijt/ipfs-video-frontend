@@ -193,7 +193,6 @@ function extractMeta(route) {
 }
 
 export default {
-  inject: ["ipfs"],
   data() {
     if (!window.MediaSource) {
       return {
@@ -236,7 +235,7 @@ export default {
         const { agentVersion, node_id } = await ipfs.id();
         this.status = "Loading";
 
-        video_element = this.$refs["video"];
+        var video_element = this.$refs["video"];
         var mediaSource = await loadIpfsPath(
           ipfs,
           ipfsPath,
