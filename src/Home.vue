@@ -73,8 +73,8 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
       Host the resulting <code>monkey.webm</code> on IPFS and point this website
       to the CID or path. If you have bash available, you can also download
       <a
-        href="https://github.com/bneijt/ipfs-video-frontend/blob/main/recode_webm.sh"
-        >a recode script from github</a
+        href="https://github.com/bneijt/ipfs-video-frontend/blob/main/recode_vp8_webm.sh"
+        >a recode script from GitHub</a
       >.
     </p>
     <h2>Submit issues</h2>
