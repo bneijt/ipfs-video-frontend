@@ -10,14 +10,14 @@
     "vue-meta": "^3.0.0-alpha.9",
     "vue-router": "^4.0.8"
   },
-  "browser": "dist/index.html",
+  "source": "dist/index.html",
   "scripts": {
     "start": "parcel serve src/index.html",
     "build": "parcel build  --no-scope-hoist src/index.html"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.0.0-beta.2",
-    "@parcel/transformer-vue": "2.0.0-beta.2",
+    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "@parcel/transformer-vue": "^2.0.0-rc.0",
     "parcel": "^2.0.0-rc.0",
     "parcel-reporter-static-files-copy": "^1.3.0",
     "sass": "^1.32.13"
