@@ -86,6 +86,9 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
     </p>
     <h2>See also</h2>
     <p>
+      <a href="https://ipfs-search.com/#/search?search=webm">ipfs-search</a>, which allows you to search for webm video's as well as all other content.
+    </p>
+    <p>
       A <a href="https://kodi.tv/">Kodi</a> plugin under development that will
       complement this website, available at:<a
         href="https://github.com/bneijt/ipfs-video-kodi"
