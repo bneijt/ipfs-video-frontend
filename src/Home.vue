@@ -77,6 +77,11 @@ ffmpeg -i monkey.avi -c:v libvpx -crf 45 -b:v 10M -r 25 -c:a libopus -b:a 96K mo
         >a recode script from GitHub</a
       >.
     </p>
+    <p>
+      If you have a video on Youtube that you would also like to directly play from IPFS you can download the webm encoded version and use that using tools like youtube-dl:
+      <pre>youtube-dl -f 'bestvideo[ext=webm]+bestaudio[ext=webm]' --merge-output-format webm "https://www.youtube.com/watch?v=u0HEHx2b_rY"</pre>
+
+    </p>
     <h2>Submit issues</h2>
     <p>
       This project is open source and you are invited to submit issues at
