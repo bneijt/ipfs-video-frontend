@@ -15,7 +15,6 @@
 import { useMeta } from "vue-meta";
 import { useRoute } from "vue-router";
 
-
 // MP4 mime info: https://gist.github.com/jimkang/f23ce12c359c7465e83f
 const V_VP8 = new TextEncoder().encode("V_VP8"),
   V_VP9 = new TextEncoder().encode("V_VP9"),
@@ -113,7 +112,7 @@ function mimeCodecFor(blob) {
   return `${container}`;
 }
 
-async function loadIpfsPath(ipfs, path, errorHandler) {
+async function loadIpfsPath(videoElement, ipfs, path, errorHandler) {
   var mediaSource = new MediaSource();
 
   mediaSource.addEventListener("sourceopen", onMediaSourceOpen);
@@ -165,10 +164,20 @@ async function loadIpfsPath(ipfs, path, errorHandler) {
         try {
           sourceBuffer.appendBuffer(chunk.value);
         } catch (exp) {
-          //Quota exceeded if the video element was already removed
-          console.error("Failed to append video buffer.", exp);
-          errorHandler(`Failed to append video buffer: '${exp}' `);
-          sourceBuffer.removeEventListener("updateend", appendNext);
+          if (exp.name == "QuotaExceededError") {
+            // Quota exceeded, remove some data
+            function removeData() {
+              const dropTill = Math.max(1, videoElement.currentTime - 1);
+              console.log("Dropping buffer till", dropTill);
+              sourceBuffer.remove(0, dropTill);
+            }
+            setTimeout(removeData, 5000);
+          } else {
+            //Other issue, or video element already hidden/stopped
+            console.error("Failed to append video buffer.", exp);
+            errorHandler(`Failed to append video buffer: '${exp}' `);
+            sourceBuffer.removeEventListener("updateend", appendNext);
+          }
         }
       }
     };
@@ -209,7 +218,12 @@ export default {
     };
   },
   mounted: function () {
-    this.loadVideo();
+    this.openVideo();
+  },
+  unmounted: function () {
+    if (this.closeVideo !== undefined) {
+      this.closeVideo();
+    }
   },
   computed: {
     title: function () {
@@ -225,12 +239,15 @@ export default {
   watch: {
     ipfsPath(newPath, oldPath) {
       if (newPath !== undefined && newPath.length) {
-        this.loadVideo();
+        if (this.closeVideo !== undefined) {
+          this.closeVideo();
+        }
+        this.openVideo();
       }
     },
   },
   methods: {
-    async loadVideo() {
+    async openVideo() {
       const component = this;
       try {
         const ipfs = await this.$ipfs,
@@ -239,8 +256,9 @@ export default {
         const { agentVersion, node_id } = await ipfs.id();
         this.status = "Loading";
 
-        video_element = this.$refs["video"];
+        videoElement = this.$refs["video"];
         var mediaSource = await loadIpfsPath(
+          videoElement,
           ipfs,
           ipfsPath,
           function errorHandler(msg, reroute) {
@@ -251,7 +269,13 @@ export default {
           }
         );
         if (mediaSource !== undefined) {
-          video_element.src = window.URL.createObjectURL(mediaSource);
+          component.closeVideo = function closeVideo() {
+            //TODO nicer clean-up and close, including disabling handlers
+            if (mediaSource.sourceBuffers.length > 0) {
+              mediaSource.removeSourceBuffer(mediaSource.sourceBuffers[0]);
+            }
+          };
+          videoElement.src = window.URL.createObjectURL(mediaSource);
           mediaSource.addEventListener("sourceended", function sourceEnded() {
             component.status = "Media source ended";
           });
@@ -259,7 +283,7 @@ export default {
             component.status = "Media source closed";
           });
           mediaSource.addEventListener("sourceopen", function () {
-            URL.revokeObjectURL(video_element.src);
+            URL.revokeObjectURL(videoElement.src);
           });
         }
       } catch (err) {
