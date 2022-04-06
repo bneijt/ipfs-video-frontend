@@ -39,6 +39,28 @@
             Use ipfs.io gateway
           </button>
         </div>
+        <div class="control">
+          <a
+            v-bind:href="'http://localhost:8080/ipfs/' + ipfsPath"
+            class="button"
+            title="Open at localhost:8080"
+            v-bind:disabled="isInvalidIpfsPath"
+            target="_blank"
+          >
+            Open at localhost:8080
+          </a>
+        </div>
+        <div class="control">
+          <a
+            v-bind:href="'https://ipfs.io/ipfs/' + ipfsPath"
+            class="button"
+            title="Open at ipfs.io"
+            v-bind:disabled="isInvalidIpfsPath"
+            target="_blank"
+          >
+            Open at ipfs.io
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -59,10 +81,15 @@ export default {
   },
   computed: {
     isInvalidIpfsPath() {
-      return (
-        this.ipfsPath === undefined || this.ipfsPath.length < MIN_CID_LENGTH
-      );
-    }
+      if (
+        this.ipfsPath === undefined ||
+        this.ipfsPath.length < MIN_CID_LENGTH
+      ) {
+        return true;
+      } else {
+        return null;
+      }
+    },
   },
   methods: {
     useIpfs() {
