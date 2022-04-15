@@ -167,7 +167,7 @@ async function loadIpfsPath(videoElement, ipfs, path, errorHandler) {
           if (exp.name == "QuotaExceededError") {
             // Quota exceeded, remove some data
             function removeData() {
-              const dropTill = Math.max(1, videoElement.currentTime - 1);
+              const dropTill = Math.max(1, videoElement.currentTime - 5);
               console.log("Dropping buffer till", dropTill);
               sourceBuffer.remove(0, dropTill);
             }
