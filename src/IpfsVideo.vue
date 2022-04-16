@@ -169,11 +169,9 @@ async function loadIpfsPath(videoElement, ipfs, path, errorHandler) {
             function removeData() {
               const dropTill = Math.max(1, videoElement.currentTime - 5);
               console.log("Dropping buffer till", dropTill);
-              sourceBuffer.addEventListener("updateend", appendNext);
               sourceBuffer.remove(0, dropTill);
             }
             setTimeout(removeData, 5000);
-            sourceBuffer.removeEventListener("updateend", appendNext);
           } else {
             //Other issue, or video element already hidden/stopped
             console.error("Failed to append video buffer.", exp);
