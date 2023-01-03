@@ -2,14 +2,14 @@ import { createApp } from "vue";
 import { createRouter, createWebHistory } from 'vue-router';
 import { createMetaManager, plugin as metaPlugin } from 'vue-meta'
 
-import App from "./App";
-import Home from "./Home";
-import IpfsVideo from "./IpfsVideo";
-import PathForm from "./components/PathForm";
-import IpfsGatewayVideo from "./IpfsGatewayVideo";
-import IpfsLs from './IpfsLs';
-import NotFound from './NotFound';
-import VueIpfs from './plugins/vue-ipfs';
+import App from "./App.vue";
+import Home from "./Home.vue";
+import IpfsVideo from "./IpfsVideo.vue";
+import PathForm from "./components/PathForm.vue";
+import IpfsGatewayVideo from "./IpfsGatewayVideo.vue";
+import IpfsLs from './IpfsLs.vue';
+import NotFound from './NotFound.vue';
+import VueIpfs from './plugins/vue-ipfs.js';
 
 const routes = [
   { path: '/', component: Home },

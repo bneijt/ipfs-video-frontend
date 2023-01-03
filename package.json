@@ -2,10 +2,9 @@
   "name": "ipfs-video-frontend",
   "version": "0.0.1",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "bulma": "^0.9.4",
-    "ipfs": "^0.65.0",
+    "ipfs-core": "^0.17.0",
     "vue": "^3.2.45",
     "vue-meta": "^3.0.0-alpha.10",
     "vue-router": "^4.1.6"
@@ -16,6 +15,7 @@
     "build": "parcel build  --no-scope-hoist src/index.html"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.7",
     "@parcel/transformer-sass": "^2.8.2",
     "@parcel/transformer-vue": "^2.8.2",
     "parcel": "^2.8.2",
