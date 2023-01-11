@@ -256,7 +256,7 @@ export default {
         const { agentVersion, node_id } = await ipfs.id();
         this.status = "Loading";
 
-        videoElement = this.$refs["video"];
+        var videoElement = this.$refs["video"];
         var mediaSource = await loadIpfsPath(
           videoElement,
           ipfs,

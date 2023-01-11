@@ -2,6 +2,14 @@
   "name": "ipfs-video-frontend",
   "version": "0.0.1",
   "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "bulma": "^0.9.4",
     "ipfs-core": "^0.17.0",
@@ -9,21 +17,10 @@
     "vue-meta": "^3.0.0-alpha.10",
     "vue-router": "^4.1.6"
   },
-  "source": "dist/index.html",
-  "scripts": {
-    "start": "parcel serve src/index.html",
-    "build": "parcel build  --no-scope-hoist src/index.html"
-  },
   "devDependencies": {
-    "@babel/core": "^7.20.7",
-    "@parcel/transformer-sass": "^2.8.2",
-    "@parcel/transformer-vue": "^2.8.2",
-    "parcel": "^2.8.2",
-    "parcel-reporter-static-files-copy": "^1.5.0",
-    "sass": "^1.57.1"
-  },
-  "resolutions": {
-    "trim-newlines": "^3.0.1"
+    "@vitejs/plugin-vue": "^4.0.0",
+    "sass": "^1.57.1",
+    "vite": "^4.0.0"
   },
   "browserslist": [
     "last 2 versions and not dead and > 2%"
