@@ -11,6 +11,7 @@
 # production
 /build
 /examples
+/tmp
 
 # misc
 .DS_Store
