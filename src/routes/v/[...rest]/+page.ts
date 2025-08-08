@@ -1,115 +1,112 @@
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import { verifiedFetch } from "@helia/verified-fetch";
+import { mimeCodecFor } from "$lib/mimeDetection";
 
 export const ssr = false;
 
-// MP4 mime info: https://gist.github.com/jimkang/f23ce12c359c7465e83f
-const V_VP8 = new TextEncoder().encode("V_VP8"),
-  V_VP9 = new TextEncoder().encode("V_VP9"),
-  V_AV1 = new TextEncoder().encode("V_AV1"),
-  A_OPUS = new TextEncoder().encode("A_OPUS"),
-  A_VORBIS = new TextEncoder().encode("A_VORBIS"),
-  A_MP4A = new TextEncoder().encode("mp4a"),
-  V_AVC1_42E01E = [0x42, 0xe0, 0x1e],
-  V_AVC1_640032 = [0x64, 0x00, 0x32];
+class VideoBufferLoader {
+  readonly bufferMeasureSeconds = 60; // approximate buffer time in seconds
+  readonly inputStream: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>>;
+  readonly mediaSource: MediaSource;
+  outputBuffer?: SourceBuffer;
+  mediaElement?: HTMLMediaElement;
 
-function isSubsequenceOf(subsequence, offset, data) {
-  return subsequence.every(function (value, index) {
-    return value === data[offset + index];
-  });
-}
-function containsSubsequence(needle, haystack) {
-  let startIndex = haystack.indexOf(needle[0]);
-  do {
-    if (isSubsequenceOf(needle, startIndex, haystack)) {
-      return true;
-    }
-    startIndex = haystack.indexOf(needle[0], startIndex + 1);
-  } while (startIndex > 0);
-  return false;
-}
-function findFirstSubsequence(needles, haystack) {
-  for (const needle_name in needles) {
-    if (containsSubsequence(needles[needle_name], haystack)) {
-      return needle_name;
-    }
+  constructor(
+    inputStream: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>>,
+    mediaSource: MediaSource,
+  ) {
+    this.inputStream = inputStream;
+    this.mediaSource = mediaSource;
   }
-  return undefined;
-}
-function mimeCodecFor(blob: Uint8Array) {
-  //See also https://www.garykessler.net/library/file_sigs.html
-  // mime, offset, magic bytes
-  let container = "video/webm",
-    codecs = "";
-  const mimes: Array<[string, number, Uint8Array]> = [
-      [
-        "video/mp4",
-        4,
-        new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4d, 0x53, 0x4e, 0x56]),
-      ],
-      [
-        "video/mp4",
-        4,
-        new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f, 0x6d]),
-      ],
-      [
-        "video/mp4",
-        4,
-        new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34, 0x32]),
-      ],
-      ["video/webm", 0, new Uint8Array([0x1a, 0x45, 0xdf, 0xa3])],
-    ],
-    firstChunk = blob.slice(0, 0x3b0);
 
-  for (const match of mimes) {
-    const name = match[0],
-      magicBytesOffset = match[1],
-      magicBytes = match[2];
-    if (isSubsequenceOf(magicBytes, magicBytesOffset, firstChunk)) {
-      container = name;
-      break;
+  async dropOldBuffer() {
+    return;
+    if (this.outputBuffer === undefined) {
+      console.debug("Output buffer not set, skipping drop.");
+      return;
+    }
+    if (this.outputBuffer.updating) {
+      console.debug("Output buffer is currently updating, skipping drop.");
+      return;
+    }
+    const buffered = this.outputBuffer.buffered;
+
+    if (buffered.length == 0) {
+      console.debug("Nothing to drop");
+      setTimeout(() => {
+        this.tryAddChunk();
+      }, 200);
+      return;
+    }
+
+    if (this.mediaElement === undefined) {
+      console.debug("Media element not set, skipping add chunk.");
+      return;
+    }
+
+    const currentTime = this.mediaElement.currentTime;
+
+    if (buffered.start(0) < currentTime - this.bufferMeasureSeconds) {
+      console.debug("Dropping from buffer start", buffered.start(0));
+      this.outputBuffer.remove(buffered.start(0), currentTime - 2);
     }
   }
 
-  //Sniff codecs
-  if (container == "video/webm") {
-    const video_formats = {
-        vp8: V_VP8,
-        vp9: V_VP9,
-        av1: V_AV1,
-      },
-      audio_formats = {
-        opus: A_OPUS,
-        vorbis: A_VORBIS,
-      };
+  async tryAddChunk() {
+    if (this.mediaElement === undefined) {
+      console.debug("Media element not set, skipping add chunk.");
+      return;
+    }
 
-    codecs = [
-      findFirstSubsequence(video_formats, firstChunk),
-      findFirstSubsequence(audio_formats, firstChunk),
-    ]
-      .filter((i) => i !== undefined)
-      .join(", ");
-  } else if (container == "video/mp4") {
-    const video_formats = {
-        "avc1.42E01E": V_AVC1_42E01E,
-        "avc1.640032": V_AVC1_640032,
-      },
-      audio_formats = {
-        "mp4a.40.2": A_MP4A,
-      };
-    codecs = [
-      findFirstSubsequence(video_formats, firstChunk),
-      findFirstSubsequence(audio_formats, firstChunk),
-    ]
-      .filter((i) => i !== undefined)
-      .join(", ");
-  }
+    if (this.outputBuffer === undefined) {
+      console.debug("Output buffer not set, skipping update.");
+      return;
+    }
+    if (this.outputBuffer.updating) {
+      console.debug("Output buffer is currently updating, skipping update.");
+      return;
+    }
 
-  if (codecs.length > 0) {
-    return `${container}; codecs="${codecs}"`;
+    const buffered = this.outputBuffer.buffered;
+    const currentTime = this.mediaElement.currentTime;
+
+    // We add data if there is nothing in the buffer or we see room
+    const shouldAddChunk =
+      buffered.length == 0 ||
+      buffered.end(buffered.length - 1) - currentTime <
+        this.bufferMeasureSeconds;
+    console.debug(
+      `Should add chunk: ${shouldAddChunk}, currentTime: ${currentTime}, buffered ${buffered.start(0)} - ${buffered.end(buffered.length - 1)} (${buffered.length})`,
+    );
+
+    if (shouldAddChunk) {
+      console.log(
+        `Adding to already buffered ${buffered.start(0)} - ${buffered.end(buffered.length - 1)}`,
+      );
+      const nextChunk = await this.inputStream.read();
+
+      if (nextChunk.done) {
+        console.log("No more data to read, ending source buffer.");
+        this.mediaSource.endOfStream();
+        return;
+      }
+
+      console.log("Got bytes", nextChunk.value?.length);
+
+      try {
+        this.outputBuffer.appendBuffer(nextChunk.value);
+      } catch (error) {
+        if (
+          error instanceof DOMException &&
+          error.name === "QuotaExceededError"
+        ) {
+          console.error("QuotaExceededError, sorry failed to play");
+          alert("QuotaExceededError, sorry failed to play");
+        }
+      }
+    }
   }
-  return `${container}`;
 }
 
 export const load: PageLoad = async ({ params }) => {
@@ -144,12 +141,27 @@ export const load: PageLoad = async ({ params }) => {
 
   const mediaSource = new MediaSource();
   const videoSrc = URL.createObjectURL(mediaSource);
-
-  mediaSource.addEventListener("sourceopen", (event) => {
-    console.log("MediaSource sourceopen:", event);
+  const bufferLoader = new VideoBufferLoader(bigFileStreamReader, mediaSource);
+  mediaSource.addEventListener("sourceopen", (sourceOpenEvent) => {
+    console.log("MediaSource sourceopen:", sourceOpenEvent);
     // Add source buffers and begin adding media data.
     const sourceBuffer = mediaSource.addSourceBuffer(videoMimetype);
+    if (sourceBuffer.mode == "segments") {
+      console.log("Setting buffer mode to sequence");
+      sourceBuffer.mode = "sequence";
+    }
+
+    sourceBuffer.addEventListener("abort", (abortEvent) => {
+      console.log("SourceBuffer abort:", abortEvent);
+    });
+    sourceBuffer.addEventListener("error", (errorEvent) => {
+      console.error("SourceBuffer error:", errorEvent);
+    });
+    sourceBuffer.addEventListener("updateend", () => {
+      bufferLoader.dropOldBuffer();
+    });
     sourceBuffer.appendBuffer(firstChunk.value);
+    bufferLoader.outputBuffer = sourceBuffer;
   });
 
   mediaSource.addEventListener("sourceended", () => {
@@ -160,5 +172,10 @@ export const load: PageLoad = async ({ params }) => {
   return {
     title: title,
     videoSrc: videoSrc,
+    ipfsUrl: ipfsUrl,
+    onVideoTimeUpdate: (onTimeUpdateEvent: Event) => {
+      bufferLoader.mediaElement = onTimeUpdateEvent.target as HTMLMediaElement;
+      bufferLoader.tryAddChunk();
+    },
   };
 };
