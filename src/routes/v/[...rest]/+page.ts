@@ -6,9 +6,10 @@ import { mimeCodecFor } from "$lib/mimeDetection";
 export const ssr = false;
 
 class VideoBufferLoader {
-  readonly bufferMeasureSeconds = 60; // approximate buffer time in seconds
+  readonly bufferMeasureSeconds = 120; // approximate buffer time in seconds
   readonly inputStream: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>>;
   readonly mediaSource: MediaSource;
+  retryTimeout?: NodeJS.Timeout;
   outputBuffer?: SourceBuffer;
   mediaElement?: HTMLMediaElement;
 
@@ -20,8 +21,26 @@ class VideoBufferLoader {
     this.mediaSource = mediaSource;
   }
 
+  async close() {
+    console.info("Closing VideoBufferLoader");
+    if (this.inputStream) {
+      try {
+        await this.inputStream.cancel();
+      } catch (error) {
+        console.error("Error closing input stream:", error);
+      }
+    }
+    if (this.mediaSource) {
+      this.mediaSource.endOfStream();
+    }
+    if (this.retryTimeout !== undefined) {
+      clearTimeout(this.retryTimeout);
+    }
+    this.outputBuffer = undefined;
+    this.mediaElement = undefined;
+  }
+
   async dropOldBuffer() {
-    return;
     if (this.outputBuffer === undefined) {
       console.debug("Output buffer not set, skipping drop.");
       return;
@@ -34,9 +53,12 @@ class VideoBufferLoader {
 
     if (buffered.length == 0) {
       console.debug("Nothing to drop");
-      setTimeout(() => {
+      if (this.retryTimeout !== undefined) {
+        clearTimeout(this.retryTimeout);
+      }
+      this.retryTimeout = setTimeout(() => {
         this.tryAddChunk();
-      }, 200);
+      }, 250);
       return;
     }
 
@@ -48,8 +70,18 @@ class VideoBufferLoader {
     const currentTime = this.mediaElement.currentTime;
 
     if (buffered.start(0) < currentTime - this.bufferMeasureSeconds) {
-      console.debug("Dropping from buffer start", buffered.start(0));
-      this.outputBuffer.remove(buffered.start(0), currentTime - 2);
+      const dropFrom = buffered.start(0);
+      const dropTo = Math.min(
+        buffered.end(buffered.length - 1),
+        currentTime - this.bufferMeasureSeconds,
+      );
+      console.debug(
+        "Dropping from buffer start",
+        buffered.start(0),
+        currentTime - this.bufferMeasureSeconds,
+      );
+
+      this.outputBuffer.remove(dropFrom, dropTo);
     }
   }
 
@@ -77,13 +109,12 @@ class VideoBufferLoader {
       buffered.end(buffered.length - 1) - currentTime <
         this.bufferMeasureSeconds;
     console.debug(
-      `Should add chunk: ${shouldAddChunk}, currentTime: ${currentTime}, buffered ${buffered.start(0)} - ${buffered.end(buffered.length - 1)} (${buffered.length})`,
+      `Should add chunk: ${shouldAddChunk}, currentTime: ${currentTime}, buffered.length=${buffered.length}`,
     );
-
     if (shouldAddChunk) {
-      console.log(
-        `Adding to already buffered ${buffered.start(0)} - ${buffered.end(buffered.length - 1)}`,
-      );
+      // console.log(
+      //   `Adding to already buffered ${buffered.start(0)} - ${buffered.end(buffered.length - 1)}`,
+      // );
       const nextChunk = await this.inputStream.read();
 
       if (nextChunk.done) {
@@ -113,18 +144,18 @@ export const load: PageLoad = async ({ params }) => {
   if (!params.rest) {
     error(404, "Not found");
   }
-  const path = params.rest;
-  let title = path;
-  let isIpns = false;
-  if (title.includes("/")) {
-    const parts = title.split("/");
-    title = parts[parts.length - 1];
-    if (parts[0].includes(".")) {
-      isIpns = true;
-    }
-  }
 
-  const ipfsUrl = isIpns ? `ipns://${path}` : `ipfs://${path}`;
+  const pathElements = params.rest.split("/");
+  const title = pathElements[pathElements.length - 1];
+  const protocol = pathElements[0];
+  const path = pathElements.slice(1).join("/");
+  const ipfsUrl = `${protocol}://${path}`;
+  if (!["ipfs", "ipns"].includes(protocol)) {
+    error(
+      400,
+      `Invalid protocol '${protocol}', only 'ipfs' and 'ipns' are supported`,
+    );
+  }
   const response = await verifiedFetch(ipfsUrl);
   if (!response.ok) {
     error(response.status, response.statusText);
@@ -150,18 +181,20 @@ export const load: PageLoad = async ({ params }) => {
       console.log("Setting buffer mode to sequence");
       sourceBuffer.mode = "sequence";
     }
+    sourceBuffer.appendBuffer(firstChunk.value);
+    bufferLoader.outputBuffer = sourceBuffer;
 
     sourceBuffer.addEventListener("abort", (abortEvent) => {
       console.log("SourceBuffer abort:", abortEvent);
+      bufferLoader.close();
     });
     sourceBuffer.addEventListener("error", (errorEvent) => {
       console.error("SourceBuffer error:", errorEvent);
+      bufferLoader.close();
     });
     sourceBuffer.addEventListener("updateend", () => {
       bufferLoader.dropOldBuffer();
     });
-    sourceBuffer.appendBuffer(firstChunk.value);
-    bufferLoader.outputBuffer = sourceBuffer;
   });
 
   mediaSource.addEventListener("sourceended", () => {
@@ -173,9 +206,17 @@ export const load: PageLoad = async ({ params }) => {
     title: title,
     videoSrc: videoSrc,
     ipfsUrl: ipfsUrl,
-    onVideoTimeUpdate: (onTimeUpdateEvent: Event) => {
-      bufferLoader.mediaElement = onTimeUpdateEvent.target as HTMLMediaElement;
+    videoOnTimeupdate: (ontimeupdateEvent: Event) => {
+      bufferLoader.mediaElement = ontimeupdateEvent.target as HTMLMediaElement;
       bufferLoader.tryAddChunk();
+    },
+    videoOnAbort: () => {
+      console.log("Video aborted, closing buffer loader");
+      bufferLoader.close();
+    },
+    videoOnError: (errorEvent: Event) => {
+      console.error("Video error:", errorEvent);
+      bufferLoader.close();
     },
   };
 };
