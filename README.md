@@ -1,22 +1,41 @@
-IPFS video front-end
-=========
-This is the IPFS video front-end hosted on https://ipfs.video
+# sv
 
-The basic idea is being able to play a video from IPFS directly or using one of the gateways available.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-Development notes
-================
+## Creating a project
 
-To detect the type of MP4 embedded media, I did some reverse engineering to find the correct bytes for the different codecs embedded in the mp4 file.
+If you're seeing this, you've probably already done this step. Congrats!
 
-Commands to do that include:
+```sh
+# create a new project in the current directory
+npx sv create
 
-    #!/bin/bash
-    echo avc1
-    mp4file --dump "$1" | grep AVCProfileIndication
-    mp4file --dump "$1" | grep profile_compatibility
-    mp4file --dump "$1" | grep AVCLevelIndication
+# create a new project in my-app
+npx sv create my-app
+```
 
-    echo mp4a
-    mp4file --dump "$1" | grep objectTypeId
-    mp4file --dump "$1" | grep AVCProfileIndication
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```sh
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```sh
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+
+http://localhost:5173/v/Qme4QjkyZQuFtN2SDhELfXVshMyAEec53jaFQ8kR4maLeV/Alan%20Kay%20at%20OOPSLA%201997%20-%20The%20computer%20revolution%20hasnt%20happened%20yet.webm
